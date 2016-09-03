@@ -32,7 +32,8 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
 		return multipartConfigElement;
 	}
 
-	private static final String LOCATION = "D:/image/"; // Temporary location where files will be stored
+	private static String location = System.getProperty("user.dir");
+	private static final String LOCATION = location; // Temporary location where files will be stored
 
 	private static final long MAX_FILE_SIZE = 5242880; // 5MB : Max file size.
 														// Beyond that size spring will throw exception.

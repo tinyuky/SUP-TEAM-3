@@ -42,6 +42,9 @@ public class Product {
 	@Column(name="pr", nullable=true)
 	private String pr;
 	
+	@Column(name="hinh", nullable=true)
+	private String hinh;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -87,7 +90,13 @@ public class Product {
 	public void setPr(String pr) {
 		this.pr = pr;
 	}
-
+	public String getHinh() {
+		return hinh;
+	}
+	public void setHinh(String hinh) {
+		this.hinh = hinh;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", ten=" + ten + ", diachi=" + diachi

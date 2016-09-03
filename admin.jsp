@@ -28,6 +28,7 @@
 						<th>Giá</th>
 						<th>Giá khuyến mãi</th>
 						<th>Giới thiệu</th>
+						<th>Hình</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -39,6 +40,7 @@
 							<td>${user.gia1}</td>
 							<td>${user.gia2}</td>
 							<td>${user.pr}</td>
+							<td><img src="D:\eclipse\Dell_logo-2-Copy.jpg"  width="100" height="100"></td>
 							<td><a href="<c:url value='/edit-${user.id}' />"
 								class="btn btn-success custom-width">edit</a></td>
 							<td><a href="<c:url value='/delete-${user.id}' />"

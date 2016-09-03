@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.parsing.Location;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,8 +33,9 @@ import com.websystique.springsecurity.util.FileValidator;
 
 @Controller
 public class HelloWorldController {
+	private static String location = System.getProperty("user.dir");
 	
-	private static String UPLOAD_LOCATION="D:/image/";
+	private static String UPLOAD_LOCATION= location;
 	
 	@Autowired
 	FileValidator fileValidator;
@@ -114,7 +116,8 @@ public class HelloWorldController {
 		} else {
 
 			// Now do something with file...
-			FileCopyUtils.copy(fileBucket.getFile().getBytes(), new File( UPLOAD_LOCATION + fileBucket.getFile().getOriginalFilename()));
+			FileCopyUtils.copy(fileBucket.getFile().getBytes(), new File( UPLOAD_LOCATION , fileBucket.getFile().getOriginalFilename()));
+		
 		}
 		Product employee = new Product();
 		try {
@@ -124,13 +127,14 @@ public class HelloWorldController {
 			employee.setGia1(fileBucket.getGia1());
 			employee.setGia2(fileBucket.getGia2());
 			employee.setPr(new	String(fileBucket.getPr().getBytes("ISO-8859-1"), "UTF-8"));
+			employee.setHinh(location+"\\"+fileBucket.getFile().getOriginalFilename());
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		productService.Add(employee);
-	
+		
 		return "redirect:/admin";
 	}
 	
