@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -23,15 +22,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Admin</a>
         </div>
         <div class="navbar-collapse collapse">
           <form class="nav navbar-nav" role="form">
-           <li class="active"><a href="#">QL Địa Điểm</a></li>
-            <li><a href="#">QL Người Dùng</a></li>
+           <li class="active"><a href="/SpringSecurityHibernateRoleBasedLoginExample/admin">Quản lí địa điểm</a></li>
+            <li><a href="#">Quản lí người dùng</a></li>
           </form>
            <form class="navbar-form navbar-right" role="form">
-           <a class="btn btn-sm btn-info" href="<c:url value="/logout"/>">Logout</a>
+           <a class="btn btn-sm btn-info" href="<c:url value="/logout"/>">Đăng xuất</a>
              </form>
         </div><!--/.navbar-collapse -->
       </div>
@@ -49,7 +47,7 @@
     <div class="container">
     <div class="panel panel-default">
 	<div class="alert alert-info" role="alert">
-		<div class="alert alert-warning" role="alert"><h4>Co So Registration Form</h4></div>
+		<div class="alert alert-warning" role="alert"><h4>Đăng kí địa điểm</h4></div>
 		<form:form method="POST" modelAttribute="fileBucket" enctype="multipart/form-data"
 			class="form-horizontal">
 			<form:input type="hidden" path="id" id="id" />
@@ -135,14 +133,14 @@
 				<div class="form-actions floatRight">
 					<c:choose>
 						<c:when test="${edit}">
-							<input type="submit" value="Update"
-								class="btn btn-primary btn-sm" /> or <a
-								href="<c:url value='/admin' />">Cancel</a>
+							<input type="submit" value="Cập nhật"
+								class="btn btn-primary btn-sm" />     <a
+								href="<c:url value='/admin' />">Hủy</a>
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Register"
-								class="btn btn-primary btn-sm" /> or <a
-								href="<c:url value='/admin' />">Cancel</a>
+							<input type="submit" value="Đăng kí"
+								class="btn btn-primary btn-sm" />     <a
+								href="<c:url value='/admin'/> "/>Hủy</a>
 						</c:otherwise>
 					</c:choose>
 				</div>

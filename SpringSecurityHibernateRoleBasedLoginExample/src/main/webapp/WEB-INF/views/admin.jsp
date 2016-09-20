@@ -4,7 +4,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Admin page</title>
+<title>Admin</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link href="<c:url value="/static/css/bootstrap.css"/>" rel="stylesheet"
+	type="text/css" />
+<script type="text/javascript"
+	src="<c:url value="/static/css/bootstrap.min.js"/>">
+	
+</script>
+<script type="text/javascript"
+	src="<c:url value="/static/ckeditor/ckeditor.js"/>">
+	
+</script>
 <link href="static/css/bootstrap.css"
 	rel="stylesheet" type="text/css"></link>
 <link href="static/css/app.css" rel="stylesheet" type="text/css"></link>
@@ -19,15 +30,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Admin</a>
         </div>
         <div class="navbar-collapse collapse">
           <form class="nav navbar-nav" role="form">
-           <li class="active"><a href="#">QL Địa Điểm</a></li>
-            <li><a href="#">QL Người Dùng</a></li>
+           <li class="active"><a href="/SpringSecurityHibernateRoleBasedLoginExample/admin">Quản lí địa điểm</a></li>
+            <li><a href="#">Quản lí người dùng</a></li>
           </form>
            <form class="navbar-form navbar-right" role="form">
-           <a class="btn btn-sm btn-info" href="<c:url value="/logout"/>">Logout</a>
+           <a class="btn btn-sm btn-info" href="<c:url value="/logout"/>">Đăng xuất</a>
              </form>
         </div><!--/.navbar-collapse -->
       </div>
@@ -46,12 +56,15 @@
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
 			<div class="alert alert-info" role="alert">
-				<span class="lead">List of Products </span>
+				<span class="lead">Danh sách địa điểm </span>
                 <span class="navbar-form navbar-right" role="search" style="margin:0; pading:0;">
+         <form action="search">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+        	<input type="text" name="ad" class="form-control" placeholder="Tên địa điểm">
+          	<button type="submit" class="btn btn-success" value="Search-${ad}">Tìm kiếm</button>    
         </div>
-        <button type="submit" class="btn btn-default">Search</button>
+        </form>
+        
       </span>
 			</div>
 			<table class="table table-striped">
@@ -68,23 +81,53 @@
 				<tbody>
 					<c:forEach items="${users}" var="user">
 						<tr>
-							<td>${user.ten}</td>
+							<td><a data-toggle="modal" data-target="#myModal">${user.ten}</a></td>
 							<td>${user.diachi}</td>
-							<td>${user.sdt}</td>
+							<td>0${user.sdt}</td>
 							<td>${user.gia1}</td>
 							<td>${user.gia2}</td>
 							<td>${user.hinh}</td>
-							<td><a href="<c:url value='/edit-${user.id}' />"class="btn btn-success custom-width">edit</a></td>
-							<td><a href="<c:url value='/delete-${user.id}' />"class="btn btn-danger custom-width">delete</a></td>
+							<td><img alt="" src="Dell_logo-2.gif"></td>
+							<td><a href="<c:url value='/edit-${user.id}' />"class="btn btn-success custom-width">Sửa</a></td>
+							<td><a href="<c:url value='/delete-${user.id}' />"class="btn btn-danger custom-width">Xóa</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		
 		<div class="alert alert-info" role="alert">
-			<a href="<c:url value='/newuser' />">Add New Co So</a>
+			<a href="<c:url value='/newuser' />">Thêm mới cơ sở</a>
 		</div>
         </div>
     </div>
+
+<div class="container">
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+     
+<!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Giới Thiệu</h4>
+        </div>
+        <div class="modal-body">
+        <!-- ---------------- -->
+        <div class="panel panel-default">
+			<form action="upload">
+				<textarea name="description" id="editor1" rows="10" cols="80">${MoTa}</textarea>
+				<script>
+					CKEDITOR.replace('editor1');
+				</script>
+				<button type="submit" class="btn btn-default">Lưu</button>
+			</form>
+		</div>
+          <!-- ---------- -->
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  </div>
 </body>
 </html>

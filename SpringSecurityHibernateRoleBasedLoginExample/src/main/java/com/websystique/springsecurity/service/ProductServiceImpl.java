@@ -42,8 +42,16 @@ public class ProductServiceImpl implements ProductService {
 			entity.setSdt(product.getSdt());
 			entity.setGia1(product.getGia1());
 			entity.setGia2(product.getGia2());
-			entity.setHinh(product.getHinh());
+			if(product.getHinh()!=""){
+				entity.setHinh(product.getHinh());
+			}
+			
 		}
 	}
+
+	public List<Product> Search(String ten) {
+		return dao.Search(ten);
+	}
+	
 
 }

@@ -4,8 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileBucket {
@@ -21,17 +27,23 @@ public class FileBucket {
 	}
 	
 	private Integer id;
-
+	@NotEmpty(message="Thiếu tên của địa điểm")
 	private String ten;
 	
+	@NotEmpty(message="Thiếu địa chỉ của địa điểm")
 	private String diachi;
 	
-	private int sdt;
+	@NotEmpty(message="Thiếu số điện thoại của địa điểm")
+	@Size(min = 7, max = 15, message = "Số điện thoại từ 7 đến 11 số")
+	@Pattern(regexp = "[0-9]*",message="Số điện thoại không đúng định dạng")
+	private String sdt;
 	
-	private float gia1;
+	
+	@NotEmpty(message="Thiếu giá của địa điểm")
+	@Pattern(regexp = "[0-9]*",message="Gía không đúng định dạng")
+	private String gia1;
 	
 	private Float gia2;
-	
 
 	private String pr;
 	
@@ -53,17 +65,17 @@ public class FileBucket {
 	public void setDiachi(String diachi) {
 		this.diachi = diachi;
 	}
-	public int getSdt() {
+	public String getSdt() {
 		return sdt;
 	}
-	public void setSdt(int sdt) {
-		this.sdt = sdt;
+	public void setSdt(String i) {
+		this.sdt = i;
 	}
 	
-	public float getGia1(){
+	public String getGia1(){
 		return gia1;
 	}
-	public void setGia1(float gia1){
+	public void setGia1(String gia1){
 		this.gia1=gia1;
 	}
 	

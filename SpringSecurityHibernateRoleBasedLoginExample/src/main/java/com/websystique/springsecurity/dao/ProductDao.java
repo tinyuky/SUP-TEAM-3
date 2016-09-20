@@ -10,5 +10,5 @@ public interface ProductDao {
 	void Add(Product product);
 	void Delete(Integer id);
 	Product findById(int id);
-	
+	List<Product> Search(String ten);
 }

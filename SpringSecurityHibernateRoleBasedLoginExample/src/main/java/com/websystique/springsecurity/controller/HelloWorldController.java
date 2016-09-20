@@ -3,6 +3,7 @@ package com.websystique.springsecurity.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.websystique.springsecurity.model.FileBucket;
@@ -35,15 +38,10 @@ import com.websystique.springsecurity.util.FileValidator;
 public class HelloWorldController {
 	private static String location = System.getProperty("user.dir");
 
-	private static String UPLOAD_LOCATION = location;
+	private static String UPLOAD_LOCATION = "D:/workspace/SpringSecurityHibernateRoleBasedLoginExample/src/main/webapp/Image/";
 
 	@Autowired
 	FileValidator fileValidator;
-
-	@InitBinder("fileBucket")
-	protected void initBinderFileBucket(WebDataBinder binder) {
-		binder.setValidator(fileValidator);
-	}
 
 	@Autowired
 	ProductService productService;
@@ -113,20 +111,24 @@ public class HelloWorldController {
 		 * 
 		 */
 		Product employee = new Product();
+		FileBucket error = new FileBucket();
 		if (resultfile.hasErrors()) {
+			fileBucket.setTen(new String(fileBucket.getTen().getBytes("ISO-8859-1"), "UTF-8"));
+			fileBucket.setDiachi(new String(fileBucket.getDiachi().getBytes("ISO-8859-1"), "UTF-8"));
+			model.addAttribute("fileBucket", fileBucket);
 			return "registration";
 		}
 		if (fileBucket.getFile().getSize() != 0) {
 			FileCopyUtils.copy(fileBucket.getFile().getBytes(),
-					new File(UPLOAD_LOCATION, fileBucket.getFile().getOriginalFilename()));
-			employee.setHinh(UPLOAD_LOCATION + "\\" + fileBucket.getFile().getOriginalFilename());		
+					new File(UPLOAD_LOCATION + fileBucket.getFile().getOriginalFilename()));
+			employee.setHinh(UPLOAD_LOCATION +  fileBucket.getFile().getOriginalFilename());		
 		}
 		
 		try {
 			employee.setTen(new String(fileBucket.getTen().getBytes("ISO-8859-1"), "UTF-8"));
 			employee.setDiachi(new String(fileBucket.getDiachi().getBytes("ISO-8859-1"), "UTF-8"));
-			employee.setSdt(fileBucket.getSdt());
-			employee.setGia1(fileBucket.getGia1());
+			employee.setSdt(Integer.parseInt(fileBucket.getSdt().trim()));
+			employee.setGia1(Float.parseFloat(fileBucket.getSdt().trim()));
 			employee.setGia2(fileBucket.getGia2());
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -151,8 +153,8 @@ public class HelloWorldController {
 		FileBucket fileBucket = new FileBucket();
 		fileBucket.setTen(product.getTen());
 		fileBucket.setDiachi(product.getDiachi());
-		fileBucket.setSdt(product.getSdt());
-		fileBucket.setGia1(product.getGia1());
+		fileBucket.setSdt(""+product.getSdt());
+		fileBucket.setGia1(""+product.getGia1());
 		fileBucket.setGia2(product.getGia2());
 		model.addAttribute("fileBucket", fileBucket);
 		model.addAttribute("edit", true);
@@ -164,26 +166,22 @@ public class HelloWorldController {
 	public String updateProduct(@Valid FileBucket fileBucket, BindingResult result, ModelMap model,
 			@PathVariable int id) throws IOException {
 
-		if (result.hasErrors()) {
-			return "registration";
-		}
-		 
 		Product employee = new Product();
 		if (result.hasErrors()) {
-			System.out.println("validation errors");
 			return "registration";
 		}
-		if (fileBucket.getFile().getName() != "") {
+		if (fileBucket.getFile().getSize() != 0) {
 			FileCopyUtils.copy(fileBucket.getFile().getBytes(),
 					new File(UPLOAD_LOCATION, fileBucket.getFile().getOriginalFilename()));
-			employee.setHinh(UPLOAD_LOCATION + "\\" + fileBucket.getFile().getOriginalFilename());
+			employee.setHinh(UPLOAD_LOCATION + "\\" + fileBucket.getFile().getOriginalFilename());		
 		}
-
+		
 		try {
+			employee.setId(id);
 			employee.setTen(new String(fileBucket.getTen().getBytes("ISO-8859-1"), "UTF-8"));
 			employee.setDiachi(new String(fileBucket.getDiachi().getBytes("ISO-8859-1"), "UTF-8"));
-			employee.setSdt(fileBucket.getSdt());
-			employee.setGia1(fileBucket.getGia1());
+			employee.setSdt(Integer.parseInt(fileBucket.getSdt().trim()));
+			employee.setGia1(Float.parseFloat(fileBucket.getSdt().trim()));
 			employee.setGia2(fileBucket.getGia2());
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -192,10 +190,15 @@ public class HelloWorldController {
 
 		productService.updateProduct(employee);
 
-		model.addAttribute("success", "Cơ sở " + employee.getTen() + " chỉnh sửa thành công");
-		model.addAttribute("loggedinuser", getPrincipal());
-
-		return "registrationsuccess";
+		return "redirect:/admin";
+	}
+	
+	@RequestMapping("search")
+	public String Search(@RequestParam("ad") String ten, Model model) throws UnsupportedEncodingException{
+		String search  = new String(ten.getBytes("ISO-8859-1"),"UTF8");
+		 List<Product> lst = productService.Search(search);
+		 model.addAttribute("users", lst);
+		 return "/admin";
 	}
 
 	private String getPrincipal() {

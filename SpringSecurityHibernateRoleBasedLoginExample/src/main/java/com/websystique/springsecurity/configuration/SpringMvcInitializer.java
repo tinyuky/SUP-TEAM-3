@@ -33,7 +33,7 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
 	}
 
 	private static String location = System.getProperty("user.dir");
-	private static final String LOCATION = location ; // Temporary location where files will be stored
+	private static final String LOCATION = "D:/workspace/SpringSecurityHibernateRoleBasedLoginExample/src/main/webapp/Image/"; // Temporary location where files will be stored
 	
 	
 
